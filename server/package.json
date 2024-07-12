@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev:server": "nodemon --watch build --exec \"node build/bundle.cjs\"",
     "dev:build:server": "webpack --mode development --config webpack.server.cjs --watch",
-    "dev:server": "nodemon --watch build --exec \"node build/bundle.cjs\""
+    "dev:build:client": "webpack --mode development --config webpack.client.cjs --watch"
   },
-  "type": "module",
   "keywords": [],
   "author": "Petrov Kirill",
   "license": "ISC",
