@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev:server": "nodemon --watch build --exec \"node build/bundle.cjs\"",
-    "dev:build:server": "webpack --mode development --config webpack.server.cjs --watch",
-    "dev:build:client": "webpack --mode development --config webpack.client.cjs --watch"
+    "dev": "concurrently \"pnpm run dev:build:server\" \"pnpm run dev:build:client\"",
+    "dev:server": "nodemon --watch build --exec \"node build/bundle.js\"",
+    "dev:build:server": "webpack --mode development --config webpack.server.js --watch",
+    "dev:build:client": "webpack --mode development --config webpack.client.js --watch"
   },
   "keywords": [],
   "author": "Petrov Kirill",
@@ -23,7 +24,10 @@
     "@babel/preset-env": "^7.24.8",
     "@babel/preset-react": "^7.24.7",
     "babel-loader": "^9.1.3",
+    "concurrently": "^8.2.2",
     "nodemon": "^3.1.4",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "webpack-merge": "^6.0.1",
+    "webpack-node-externals": "^3.0.0"
   }
 }
