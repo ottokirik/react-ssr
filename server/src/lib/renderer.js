@@ -1,17 +1,22 @@
 import ReactDOM from 'react-dom/server';
 import React from 'react';
+import { Provider } from 'react-redux';
 import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'react-router-dom/server.js';
 
 import { routes } from '../client/routes.js';
 
 const handler = createStaticHandler(routes);
 
-export const renderReactApp = async (req, res) => {
+export const renderReactApp = async (req, res, store) => {
 	const fetchRequest = createFetchRequest(req, res);
 	const context = await handler.query(fetchRequest);
 	const router = createStaticRouter(handler.dataRoutes, context);
 
-	const content = ReactDOM.renderToString(<StaticRouterProvider router={router} context={context} />);
+	const content = ReactDOM.renderToString(
+		<Provider store={store}>
+			<StaticRouterProvider router={router} context={context} />
+		</Provider>,
+	);
 
 	return `
 		<!DOCTYPE html>
