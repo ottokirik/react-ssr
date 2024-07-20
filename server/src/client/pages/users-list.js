@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchUsers } from '../slices';
 
-export const UsersList = () => {
+export const UsersPage = () => {
 	const dispatch = useDispatch();
 	const users = useSelector((state) => state.users.userList);
 
@@ -14,9 +14,11 @@ export const UsersList = () => {
 	return (
 		<>
 			<h1>Users</h1>
-			{users.map(({ name, id }) => (
-				<div key={id}>{name}</div>
-			))}
+			<ul>
+				{users.map(({ name, id }) => (
+					<li key={id}>{name}</li>
+				))}
+			</ul>
 		</>
 	);
 };

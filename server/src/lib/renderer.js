@@ -1,8 +1,9 @@
 import ReactDOM from 'react-dom/server';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'react-router-dom/server.js';
 import { matchRoutes } from 'react-router-dom';
+import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'react-router-dom/server.js';
+import serialize from 'serialize-javascript';
 
 import { routes } from '../client/routes.js';
 import { store } from '../client/store.js';
@@ -18,7 +19,7 @@ export const renderReactApp = async (req, res) => {
 	const foundRoutes = matchRoutes(routes, url);
 
 	if (!foundRoutes) {
-		return res.status(404).send('Not found');
+		return null;
 	}
 
 	const promises = foundRoutes.filter(({ route }) => route.fetchData).map(({ route }) => route.fetchData());
@@ -37,6 +38,7 @@ export const renderReactApp = async (req, res) => {
 				<meta charset="UTF-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<script defer src="/bundle.js"></script>
+				<script>window.__INITIAL_STATE__ = ${serialize(store.getState())}</script>
 				<title>Document</title>
 			</head>
 			<body>
