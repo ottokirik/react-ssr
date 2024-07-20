@@ -3,6 +3,10 @@ import React from 'react';
 import { Home } from './components/home';
 import { Test } from './components/test';
 import { UsersList } from './components/users-list';
+import { store } from './store';
+import { fetchUsers } from './slices';
+
+const dispatch = store.dispatch;
 
 const routes = [
 	{
@@ -16,6 +20,9 @@ const routes = [
 	{
 		path: '/users',
 		element: <UsersList />,
+		fetchData: async () => {
+			await dispatch(fetchUsers());
+		},
 	},
 ];
 
