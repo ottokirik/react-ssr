@@ -6,11 +6,11 @@ import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'r
 import serialize from 'serialize-javascript';
 
 import { routes } from '../client/routes.js';
-import { store } from '../client/store.js';
+import { createServerStore } from '../store-server.js';
 
 const handler = createStaticHandler(routes);
 
-export const renderReactApp = async (req, res) => {
+export const renderReactApp = async (req, res, store) => {
 	const fetchRequest = createFetchRequest(req, res);
 	const context = await handler.query(fetchRequest);
 	const router = createStaticRouter(handler.dataRoutes, context);
@@ -22,7 +22,9 @@ export const renderReactApp = async (req, res) => {
 		return null;
 	}
 
-	const promises = foundRoutes.filter(({ route }) => route.fetchData).map(({ route }) => route.fetchData());
+	const promises = foundRoutes
+		.filter(({ route }) => route.fetchData)
+		.map(({ route }) => route.fetchData(store.dispatch));
 	await Promise.all(promises);
 
 	const content = ReactDOM.renderToString(

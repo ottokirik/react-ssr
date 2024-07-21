@@ -13,7 +13,7 @@ export const UsersPage = () => {
 
 	return (
 		<>
-			<h1>Users</h1>
+			<h3>Users</h3>
 			<ul>
 				{users.map(({ name, id }) => (
 					<li key={id}>{name}</li>

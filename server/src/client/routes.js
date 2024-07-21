@@ -1,22 +1,29 @@
 import React from 'react';
 
 import { HomePage, UsersPage } from './pages';
-import { store } from './store';
-import { fetchUsers } from './slices';
-
-const dispatch = store.dispatch;
+import { fetchUsers, fetchCurrentUser } from './slices';
+import { App } from './app';
 
 const routes = [
 	{
 		path: '/',
-		element: <HomePage />,
-	},
-	{
-		path: '/users',
-		element: <UsersPage />,
-		fetchData: async () => {
-			await dispatch(fetchUsers());
+		element: <App />,
+		fetchData: async (dispatch) => {
+			await dispatch(fetchCurrentUser());
 		},
+		children: [
+			{
+				index: true,
+				element: <HomePage />,
+			},
+			{
+				path: 'users',
+				element: <UsersPage />,
+				fetchData: async (dispatch) => {
+					await dispatch(fetchUsers());
+				},
+			},
+		],
 	},
 ];
 

@@ -1,8 +1,9 @@
 import { combineReducers, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
 
-export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
-	const { data } = await axios.get('https://react-ssr-api.herokuapp.com/users');
+/* ---------------------------------- Users --------------------------------- */
+
+export const fetchUsers = createAsyncThunk('users/fetchUsers', async (_, { extra: api }) => {
+	const { data } = await api.get('/users');
 
 	return data;
 });
@@ -20,6 +21,28 @@ const usersSlice = createSlice({
 	},
 });
 
+/* ------------------------------ Current user ------------------------------ */
+
+export const fetchCurrentUser = createAsyncThunk('auth/fetchCurrentUser', async (_, { extra: api }) => {
+	const { data } = await api.get('/current_user');
+
+	return data;
+});
+
+const authSlice = createSlice({
+	name: 'auth',
+	initialState: {
+		currentUser: null,
+	},
+	reducers: {},
+	extraReducers: (builder) => {
+		builder.addCase(fetchCurrentUser.fulfilled, (state, action) => {
+			state.currentUser = action.payload || false;
+		});
+	},
+});
+
 export const reducers = combineReducers({
 	users: usersSlice.reducer,
+	auth: authSlice.reducer,
 });
