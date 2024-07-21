@@ -6,11 +6,11 @@ import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'r
 import serialize from 'serialize-javascript';
 
 import { routes } from '../client/routes.js';
-import { createServerStore } from '../store-server.js';
+import { StaticContextProvider } from '../client/static-context.js';
 
 const handler = createStaticHandler(routes);
 
-export const renderReactApp = async (req, res, store) => {
+export const renderReactApp = async (req, res, store, staticContext = {}) => {
 	const fetchRequest = createFetchRequest(req, res);
 	const context = await handler.query(fetchRequest);
 	const router = createStaticRouter(handler.dataRoutes, context);
@@ -28,9 +28,11 @@ export const renderReactApp = async (req, res, store) => {
 	await Promise.all(promises);
 
 	const content = ReactDOM.renderToString(
-		<Provider store={store}>
-			<StaticRouterProvider router={router} context={context} />
-		</Provider>,
+		<StaticContextProvider staticContext={staticContext}>
+			<Provider store={store}>
+				<StaticRouterProvider router={router} context={context} />
+			</Provider>
+		</StaticContextProvider>,
 	);
 
 	return `

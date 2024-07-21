@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { HomePage, UsersPage } from './pages';
+import { HomePage, UsersPage, NotFoundPage } from './pages';
 import { fetchUsers, fetchCurrentUser } from './slices';
 import { App } from './app';
 
@@ -22,6 +22,10 @@ const routes = [
 				fetchData: async (dispatch) => {
 					await dispatch(fetchUsers());
 				},
+			},
+			{
+				path: '*',
+				element: <NotFoundPage />,
 			},
 		],
 	},
