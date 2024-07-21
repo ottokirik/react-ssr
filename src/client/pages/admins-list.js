@@ -9,8 +9,10 @@ const AdminsPageWithoutAuth = () => {
 	const admins = useSelector((state) => state.admins.adminList);
 
 	useEffect(() => {
+		if (admins.length > 0) return;
+
 		dispatch(fetchAdmins());
-	}, [dispatch]);
+	}, [dispatch, admins.length]);
 
 	return (
 		<>

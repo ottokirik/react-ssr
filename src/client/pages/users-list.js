@@ -8,8 +8,10 @@ export const UsersPage = () => {
 	const users = useSelector((state) => state.users.userList);
 
 	useEffect(() => {
+		if (users.length > 0) return;
+
 		dispatch(fetchUsers());
-	}, [dispatch]);
+	}, [dispatch, users.length]);
 
 	return (
 		<>
