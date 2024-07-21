@@ -20,8 +20,12 @@ app.use(express.static('public'));
 
 app.get('*', async (req, res) => {
 	const store = createServerStore(req);
-	const staticContext = { status: 200 };
+	const staticContext = { status: 200, url: null };
 	const content = await renderReactApp(req, res, store, staticContext);
+
+	if (staticContext.url) {
+		return res.redirect(staticContext.status, staticContext.url);
+	}
 
 	res.status(staticContext.status).send(content);
 });

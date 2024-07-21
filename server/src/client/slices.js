@@ -42,7 +42,40 @@ const authSlice = createSlice({
 	},
 });
 
+/* --------------------------------- Admins --------------------------------- */
+
+export const fetchAdmins = createAsyncThunk('admins/fetchAdmins', async (_, { extra: api, rejectWithValue }) => {
+	try {
+		const { data } = await api.get('/admins');
+
+		return data;
+	} catch (error) {
+		return rejectWithValue(error.response.data);
+	}
+});
+
+const adminsSlice = createSlice({
+	name: 'admins',
+	initialState: {
+		adminList: [],
+		error: null,
+	},
+	reducers: {},
+	extraReducers: (builder) => {
+		builder
+			.addCase(fetchAdmins.fulfilled, (state, action) => {
+				state.adminList = action.payload;
+			})
+			.addCase(fetchAdmins.rejected, (state, action) => {
+				state.error = action.payload;
+			});
+	},
+});
+
+/* -------------------------------- Reducers -------------------------------- */
+
 export const reducers = combineReducers({
 	users: usersSlice.reducer,
+	admins: adminsSlice.reducer,
 	auth: authSlice.reducer,
 });

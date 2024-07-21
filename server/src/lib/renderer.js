@@ -25,6 +25,7 @@ export const renderReactApp = async (req, res, store, staticContext = {}) => {
 	const promises = foundRoutes
 		.filter(({ route }) => route.fetchData)
 		.map(({ route }) => route.fetchData(store.dispatch));
+
 	await Promise.all(promises);
 
 	const content = ReactDOM.renderToString(

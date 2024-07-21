@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { HomePage, UsersPage, NotFoundPage } from './pages';
-import { fetchUsers, fetchCurrentUser } from './slices';
+import { HomePage, UsersPage, NotFoundPage, AdminsPage } from './pages';
+import { fetchUsers, fetchCurrentUser, fetchAdmins } from './slices';
 import { App } from './app';
 
 const routes = [
@@ -21,6 +21,13 @@ const routes = [
 				element: <UsersPage />,
 				fetchData: async (dispatch) => {
 					await dispatch(fetchUsers());
+				},
+			},
+			{
+				path: 'admins',
+				element: <AdminsPage />,
+				fetchData: async (dispatch) => {
+					await dispatch(fetchAdmins());
 				},
 			},
 			{
